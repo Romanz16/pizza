@@ -19,41 +19,93 @@ export class AdminDiscountComponent implements OnInit {
   }
 
   ngOnInit() { }
+  private getDisData(): void {
+    this.discountService.getDiscounts().subscribe(
+      data => {
+        this.adminDiscounts = data;
 
-  public getDisData(): void {
-    this.adminDiscounts = this.discountService.getData();
-    console.log(this.adminDiscounts);
+      },
+      err => {
+        console.log(err);
 
+      }
+    )
   }
   public addDiscount(): void {
-
     const newDis = new Discount(1, this.title, this.text);
     if (this.adminDiscounts.length > 0) {
       newDis.id = this.adminDiscounts.slice(-1)[0].id + 1;
     }
-    this.discountService.setData(newDis);
+    this.discountService.addDiscount(newDis).subscribe(
+      () => {
+        this.getDisData();
+      }
+    );
+
     this.title = '';
     this.text = '';
-
   }
+
   public deleteDiscount(obj: IDiscount): void {
-    const index = this.adminDiscounts.findIndex(val => val.id === obj.id);
-    console.log(index);
-    this.discountService.deleteData(index);
+    this.discountService.deleteDiscount(obj.id).subscribe(
+      () => {
+        this.getDisData();
+      }
+    );
 
   }
+
   public editDiscount(obj: IDiscount): void {
     this.title = obj.title;
     this.text = obj.text;
     this.editId = obj.id;
     this.editStatus = true;
   }
-  public saveEditDiscount(): void {
-    const index = this.adminDiscounts.findIndex(val => val.id === this.editId);
+    public saveEditDiscount(): void {
     const editDis = new Discount(this.editId, this.title, this.text);
-    this.discountService.updateData(editDis, index);
+    this.discountService.editDiscount(editDis).subscribe(
+      () => {
+        this.getDisData();
+      }
+    );
     this.title = '';
     this.text = '';
     this.editStatus = false;
   }
+  // public getDisData(): void {
+  //   this.adminDiscounts = this.discountService.getData();
+  //   console.log(this.adminDiscounts);
+
+  // }
+  // public addDiscount(): void {
+
+  //   const newDis = new Discount(1, this.title, this.text);
+  //   if (this.adminDiscounts.length > 0) {
+  //     newDis.id = this.adminDiscounts.slice(-1)[0].id + 1;
+  //   }
+  //   this.discountService.setData(newDis);
+  //   this.title = '';
+  //   this.text = '';
+
+  // }
+  // public deleteDiscount(obj: IDiscount): void {
+  //   const index = this.adminDiscounts.findIndex(val => val.id === obj.id);
+  //   console.log(index);
+  //   this.discountService.deleteData(index);
+
+  // }
+  // public editDiscount(obj: IDiscount): void {
+  //   this.title = obj.title;
+  //   this.text = obj.text;
+  //   this.editId = obj.id;
+  //   this.editStatus = true;
+  // }
+  // public saveEditDiscount(): void {
+  //   const index = this.adminDiscounts.findIndex(val => val.id === this.editId);
+  //   const editDis = new Discount(this.editId, this.title, this.text);
+  //   this.discountService.updateData(editDis, index);
+  //   this.title = '';
+  //   this.text = '';
+  //   this.editStatus = false;
+  // }
 }
