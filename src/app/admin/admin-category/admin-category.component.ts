@@ -15,12 +15,12 @@ export class AdminCategoryComponent implements OnInit {
   editId: number;
   editStatus: boolean = false;
   constructor(private discountService: CategoriesService) {
-    this.getDisData();
+    this.getData();
   }
 
   ngOnInit() { }
-  private getDisData(): void {
-    this.discountService.getDiscounts().subscribe(
+  private getData(): void {
+    this.discountService.getCategories().subscribe(
       data => {
         this.adminDiscounts = data;
 
@@ -38,7 +38,7 @@ export class AdminCategoryComponent implements OnInit {
     }
     this.discountService.addDiscount(newDis).subscribe(
       () => {
-        this.getDisData();
+        this.getData();
       }
     );
 
@@ -49,7 +49,7 @@ export class AdminCategoryComponent implements OnInit {
   public deleteDiscount(obj: ICategory): void {
     this.discountService.deleteDiscount(obj.id).subscribe(
       () => {
-        this.getDisData();
+        this.getData();
       }
     );
 
@@ -64,7 +64,7 @@ export class AdminCategoryComponent implements OnInit {
     const editDis = new Category(this.editId, this.title);
     this.discountService.editDiscount(editDis).subscribe(
       () => {
-        this.getDisData();
+        this.getData();
       }
     );
     this.title = '';

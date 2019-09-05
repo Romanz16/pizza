@@ -7,18 +7,16 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CategoriesService {
-  discounts: Array<ICategory> ;
-  
-
+  discounts: Array<ICategory>;
   url: string;
   constructor(private http: HttpClient) {
-    this.url = "http://localhost:3000/category";
+    this.url = "http://localhost:3000/categories";
   }
   // public getDiscounts(id: number): Observable<IDiscount> {
   //   return this.http.get<IDiscount>(`${this.url}/${id}`);
   // }
 
-  public getDiscounts(): Observable<Array<ICategory>> {
+  public getCategories(): Observable<Array<ICategory>> {
     return this.http.get<Array<ICategory>>(this.url);
   }
 
